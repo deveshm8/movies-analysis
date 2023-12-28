@@ -7,4 +7,5 @@ router.get('/count-raters', controller.countRaters);
 router.get('/top-raters', controller.topRaters);
 router.get('/v2/top-movies', controller.topMoviesV2);
 router.get('/rater-favorite-genre', controller.raterFavoriteGenre);
+router.get('/rater-average-genre', controller.raterAverageGenre)
   module.exports = router;

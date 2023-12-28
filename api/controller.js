@@ -159,3 +159,20 @@ exports.raterFavoriteGenre = async (req, res, next) => {
     const topGenreRaterWise = await pool.query(rawQuery);
     return res.status(200).json(topGenreRaterWise.rows);
 }
+
+exports.raterAverageGenre = async (req, res, next) => {
+    const {rater_id} = req.query;
+    if(!rater_id){
+        return res.status(400).json("rater id not found");
+    }
+    const rawQuery = `select genre, avg(rating) as avg_rating, count(rating) as num_ratings
+                        from movies mv
+                        join ratings rt on mv.id = rt.movie_id
+                        where rt.rater_id = ${rater_id}
+                        group by genre
+                        having count(rating) >= 5
+                        order by avg_rating desc
+                        limit 1;`
+    const averageGenreList = await pool.query(rawQuery);
+    return res.status(200).json(averageGenreList.rows);
+}
