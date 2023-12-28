@@ -9,8 +9,10 @@
     3. create an .env in the root folder
     4. add variable from .env.sample file (Note: all variables in .env.sample file are genuine, since    its an assignment so I have not provided dummy values)
     5. in terminal run command "npm run startd" to run the application on 3071 port
-    6. open postman and call below APIs to get data required
- 
+    6. open postman and call below APIs to get the data required
+	
+ server will look like below photo: 
+![Screenshot 2023-12-28 201508](https://github.com/deveshm8/movies-analysis/assets/60978696/11ac66aa-cd71-4cec-98fc-9875fc69bacb)
 
  Top 5 Movie Titles: Sort and print the top 5 movie titles based on the following criteria:
     ● Duration -> http://localhost:3071/movies-info/top-movies?criteria=duration
