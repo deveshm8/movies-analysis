@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
-
+const fs = require('fs');
+const csvParser = require('csv-parser');
 dotenv.config();
 const pool = new Pool(
     {
@@ -195,4 +196,38 @@ exports.highRated = async(req, res, next) => {
                         order by num_high_ratings desc`;
     const moviesAboveLimitRating = await pool.query(rawQuery);
     return res.status(200).json({ num_movies_above_7: moviesAboveLimitRating.rows.length});
+}
+
+exports.importData = async (req, res, next) => {
+    const {table_id} = req.params;
+    const csvFilePath = table_id == 2? 
+                        "C:/Users/deves/Downloads/movies_csv/movies_csv/ratings.csv": 
+                        "C:/Users/deves/Downloads/movies_csv/movies_csv/movies.csv" ;
+    const tableName = table_id == 2?'ratings': 'movies';
+    const createTableQuery =table_id == 2? 
+                            `create table ratings (rater_id integer, movie_id integer, 
+                            rating integer, time integer)`
+                            :`create table movies ( id integer, title varchar(255), year integer,
+                             country varchar(255), genre varchar(255), director varchar(255),
+                              minutes integer, poster varchar(255))`
+    await pool.query(createTableQuery);
+    const stream = fs.createReadStream(csvFilePath).pipe(csvParser({ objectMode: 100 }));
+
+    let insertDone = await new Promise((resolve, reject) => {
+        stream.on('data', (row) => {
+            const columns = Object.keys(row);
+            const values = Object.values(row);
+            if (Object.keys(row).length === 0) {
+                resolve(1)
+            }
+            // Generate the SQL query
+            const queryText = `INSERT INTO ${tableName} (${columns.join(', ')}) VALUES (${values.map((_, index) => `$${index + 1}`).join(', ')})`;
+            console.log("//////", queryText)
+            pool.query(queryText, values)// Insert data into PostgreSQL table
+                .then(() => console.log(`Inserted row`))
+                .catch((error) => console.error(error));
+        });
+    })
+
+    return res.status(200).json("data will be inserted in a seconds");
 }

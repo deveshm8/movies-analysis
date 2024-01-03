@@ -53,3 +53,17 @@
 Count of Movies with High Ratings: Count and print the number of movies that have
 received at least five reviews with a rating of 7 or higher.
    -> http://localhost:3071/movies-info/high-rated?lower_limit_rating=7
+
+
+Steps to import tables:
+
+   Then use below APIs to create tables and insert data: 
+      For movies table:  ->http://localhost:3071/movies-info/import-table/1
+      For ratings table:  ->http://localhost:3071/movies-info/import-table/2
+
+
+Postman Collection:
+  https://api.postman.com/collections/23407514-827cffc5-644e-407f-9316-3f5f95bfadea?access_key=PMAT-01HK75ZM2JG45DMPVRYCVQ171F
+
+  
+  
