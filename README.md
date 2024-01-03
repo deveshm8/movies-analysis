@@ -76,7 +76,9 @@ received at least five reviews with a rating of 7 or higher.
 Steps to import tables:
 
    Then use below APIs to create tables and insert data: 
+
       For movies table:  ->http://localhost:3071/movies-info/import-table/1
+      
       For ratings table:  ->http://localhost:3071/movies-info/import-table/2
 
 
